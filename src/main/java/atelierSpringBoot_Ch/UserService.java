@@ -3,9 +3,12 @@ package atelierSpringBoot_Ch;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 @Service
 public class UserService {
 	   @Autowired
@@ -50,7 +53,28 @@ public class UserService {
 	            userRepository.deleteById(id);
 	        }
 	    }
-	    public List<User> getAllUtilisateur() {
+	    public List<User> getAllUser() {
 	        return userRepository.findAll();
 	    } 
+	    
+	    
+		 public User updateActiveStatus(Long userId, boolean isActive) {
+		        Optional<User> optionalUser = userRepository.findById(userId);
+		        if (optionalUser.isEmpty()) {
+		            throw new RuntimeException("Utilisateur introuvable avec l'ID: " + userId);
+		        }
+
+		        User user = optionalUser.get();
+		        user.setActive(isActive); // Modifier uniquement l'attribut "active".
+		        return userRepository.save(user); // Sauvegarder les modifications.
+		    }
+	    
+			public User findUserById(Long id) {
+				// TODO Auto-generated method stub
+				return userRepository.findById(id).orElse(null);
+			}
+	    
+	    
+	    
+	    
 }

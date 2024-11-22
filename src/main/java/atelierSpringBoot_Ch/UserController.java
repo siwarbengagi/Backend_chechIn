@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.mail.MessagingException;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+	 @Autowired
+	    private EmailService emailService;
 
     @Autowired
     private UserService userService;
@@ -138,9 +143,41 @@ public class UserController {
 	}
     @GetMapping
     public List<User> getAllUtilisateurs2() {
-        return userService.getAllUtilisateur();
+        return userService.getAllUser();
     }
     
-    
+    @PostMapping("/{id}/send-email")
+    public ResponseEntity<?> sendEmailToUser(@PathVariable Long id) {
+        try {
+            User user = userService.findUserById(id);
+            if (user != null) {
+                emailService.sendEmailAttachment(
+                    user.getEmail(),
+                    "Votre demande a été acceptée",
+                    "Bonjour " + user.getPrenom()+ ",\n\nVotre demande d'inscription a été acceptée."
+                );
+                return ResponseEntity.ok("Email envoyé avec succès.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur introuvable.");
+            }
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email.");
+        }
+    }
+
+    @PutMapping("active/{id}")
+    public ResponseEntity<?> updateActiveStatus(@PathVariable Long id, @RequestBody Map<String, Boolean> updates) {
+        Boolean isActive = updates.get("active");
+        if (isActive == null) {
+            return ResponseEntity.badRequest().body("Le champ 'active' est manquant ou incorrect.");
+        }
+
+        try {
+            User updatedUser = userService.updateActiveStatus(id, isActive);
+            return ResponseEntity.ok("Statut actif de l'utilisateur mis à jour avec succès.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     
 }
