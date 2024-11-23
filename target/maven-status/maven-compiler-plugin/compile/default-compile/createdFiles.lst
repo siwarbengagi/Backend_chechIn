@@ -1,0 +1,13 @@
+atelierSpringBoot_Ch\WebConfig.class
+atelierSpringBoot_Ch\GlobalExceptionHandler.class
+atelierSpringBoot_Ch\User.class
+atelierSpringBoot_Ch\WorkSessionService.class
+atelierSpringBoot_Ch\WorkSessionRepository.class
+atelierSpringBoot_Ch\LoginRequest.class
+atelierSpringBoot_Ch\EmailService.class
+atelierSpringBoot_Ch\WorkSessionController.class
+atelierSpringBoot_Ch\UserService.class
+atelierSpringBoot_Ch\UserController.class
+atelierSpringBoot_Ch\WorkSession.class
+atelierSpringBoot_Ch\Application.class
+atelierSpringBoot_Ch\UserRepository.class

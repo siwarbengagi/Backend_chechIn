@@ -54,8 +54,8 @@ public class EmailService {
     	helper.setTo(to);
     	helper.setSubject(subject);
     	helper.setText(body);
-    	FileSystemResource file =new FileSystemResource(new File("C:\\Users\\21654\\Downloads\\download.png"));
-    	helper.addAttachment ("attachment.jpg", file);
+    	//FileSystemResource file =new FileSystemResource(new File("C:\\Users\\21654\\Downloads\\download.png"));
+    	//helper.addAttachment ("attachment.jpg", file);
     	mailSender.send(message);
     }
     
